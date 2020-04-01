@@ -261,6 +261,7 @@ def create_venue_form():
 def create_venue_submission():
   error = False
   venue = VenueForm()
+  # CHECK IF VALID. IF NOT KEEP USER ON PAGE TO MAKE CORRECTIONS
   if venue.validate_on_submit():
     try:
       new_venue = Venue(
