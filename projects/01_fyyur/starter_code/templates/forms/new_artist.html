@@ -26,7 +26,7 @@
       <div class="form-group">
         <label for="genres">Genres</label>
         <small>Ctrl+Click to select multiple</small>
-        {{ form.genres(class_ = 'form-control', placeholder='Genres, separated by commas', id=form.state, autofocus = true) }}
+        {{ form.genres(class_ = 'form-control', placeholder='Genres, separated by commas', autofocus = true) }}
       </div>
       <div class="form-group">
         <label>Seeking Venue and Description</label>
@@ -41,17 +41,18 @@
       </div>
       <div class="form-group">
         <label for="image_link">Image Link</label>
-        {{ form.image_link(class_ = 'form-control', placeholder='http://', id=form.state, autofocus = true) }}
+        {{ form.image_link(class_ = 'form-control', placeholder='http://', autofocus = true) }}
       </div>
       <div class="form-group">
         <label for="website">Website</label>
-        {{ form.website(class_ = 'form-control', placeholder='http://', id=form.state, autofocus = true) }}
+        {{ form.website(class_ = 'form-control', placeholder='http://', autofocus = true) }}
       </div>
       <div class="form-group">
           <label for="facebook-link">Facebook Link</label>
-          {{ form.facebook_link(class_ = 'form-control', placeholder='http://', id=form.state, autofocus = true) }}
+          {{ form.facebook_link(class_ = 'form-control', placeholder='http://', autofocus = true) }}
         </div>
       <input type="submit" value="Create Artist" class="btn btn-primary btn-lg btn-block">
+      {{ form.csrf_token() }}
     </form>
   </div>
 {% endblock %}

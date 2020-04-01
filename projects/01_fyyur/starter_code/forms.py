@@ -1,30 +1,35 @@
 from datetime import datetime
 from flask_wtf import Form
 from wtforms import StringField, SelectField, SelectMultipleField, DateTimeField, BooleanField
-from wtforms.validators import DataRequired, AnyOf, URL
+from wtforms.validators import DataRequired, AnyOf, URL, Regexp
 
 class ShowForm(Form):
     artist_id = StringField(
-        'artist_id'
+        'artist_id',
+        validators=[DataRequired()],
     )
     venue_id = StringField(
-        'venue_id'
+        'venue_id',
+        validators=[DataRequired()],
     )
     start_time = DateTimeField(
         'start_time',
         validators=[DataRequired()],
-        default= datetime.today()
+        default=datetime.today()
     )
 
 class VenueForm(Form):
     name = StringField(
-        'name', validators=[DataRequired()]
+        'name',
+        validators=[DataRequired()]
     )
     city = StringField(
-        'city', validators=[DataRequired()]
+        'city',
+        validators=[DataRequired()]
     )
     state = SelectField(
-        'state', validators=[DataRequired()],
+        'state',
+        validators=[DataRequired()],
         choices=[
             ('AL', 'AL'),
             ('AK', 'AK'),
@@ -80,17 +85,20 @@ class VenueForm(Form):
         ]
     )
     address = StringField(
-        'address', validators=[DataRequired()]
+        'address',
+        validators=[DataRequired()]
     )
     phone = StringField(
-        'phone'
+        'phone',
+        validators=[Regexp(r'^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$', message='Not a Phone Number')]
     )
     image_link = StringField(
         'image_link'
     )
     genres = SelectMultipleField(
         # TODO implement enum restriction
-        'genres', validators=[DataRequired()],
+        'genres',
+        validators=[DataRequired()],
         choices=[
             ('Alternative', 'Alternative'),
             ('Blues', 'Blues'),
@@ -111,11 +119,11 @@ class VenueForm(Form):
             ('Rock n Roll', 'Rock n Roll'),
             ('Soul', 'Soul'),
             ('Swing', 'Swing'),
-            ('Other', 'Other'),
+            ('Other', 'Other')
         ]
     )
-    seeking_artist = BooleanField(
-        'seeking_artist'
+    seeking_talent = BooleanField(
+        'seeking_talent'
     )
     seeking_description = StringField(
         'seeking_description'
@@ -124,18 +132,22 @@ class VenueForm(Form):
         'website'
     )
     facebook_link = StringField(
-        'facebook_link', validators=[URL()]
+        'facebook_link', 
+        validators=[Regexp(r'(^https?:\/\/)?(www.)??facebook.com\/[a-zA-z]*', message='Not a Facebook Link')]
     )
 
 class ArtistForm(Form):
     name = StringField(
-        'name', validators=[DataRequired()]
+        'name',
+        validators=[DataRequired()]
     )
     city = StringField(
-        'city', validators=[DataRequired()]
+        'city',
+        validators=[DataRequired()]
     )
     state = SelectField(
-        'state', validators=[DataRequired()],
+        'state',
+        validators=[DataRequired()],
         choices=[
             ('AL', 'AL'),
             ('AK', 'AK'),
@@ -191,15 +203,16 @@ class ArtistForm(Form):
         ]
     )
     phone = StringField(
-        # TODO implement validation logic for state
-        'phone'
+        'phone',
+        validators=[Regexp(r'^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$', message='Not a Phone Number')]
     )
     image_link = StringField(
         'image_link'
     )
     genres = SelectMultipleField(
         # TODO implement enum restriction
-        'genres', validators=[DataRequired()],
+        'genres',
+        validators=[DataRequired()],
         choices=[
             ('Alternative', 'Alternative'),
             ('Blues', 'Blues'),
@@ -233,7 +246,8 @@ class ArtistForm(Form):
     )
     facebook_link = StringField(
         # TODO implement enum restriction
-        'facebook_link', validators=[URL()]
+        'facebook_link',
+        validators=[Regexp(r'(^https?:\/\/)?(www.)??facebook.com\/[a-zA-z]*', message='Not a Facebook Link')]
     )
 
 # TODO IMPLEMENT NEW ARTIST FORM AND NEW SHOW FORM

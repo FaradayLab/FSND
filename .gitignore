@@ -1,6 +1,9 @@
 .vscode
 __pycache__
 venv
+README.md
+.pylintrc
+misc-code
 
 # OS generated files #
 ######################
@@ -11,4 +14,3 @@ venv
 .Trashes
 ehthumbs.db
 Thumbs.db
-README.md
