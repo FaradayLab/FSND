@@ -187,10 +187,8 @@ def create_app(test_config=None):
       'question': question
     })
     
-    # data = request.get_json()
-    # previous_questions = data['previous_questions']
-    # quiz_category = data['quiz_category']
-    # category_id = quiz_category['id']
+    # previous_questions = request.get_json()['previous_questions']
+    # category_id = request.get_json()['quiz_category']['id']
 
     # if category_id:
     #   query = Question.query.filter(Question.category == category_id).all()
@@ -201,7 +199,7 @@ def create_app(test_config=None):
     #   question = None
     # else:
     #   question = query[random.randint(0, len(query) - 1)].format()
-    #   i = 1
+
     #   while question['id'] in previous_questions:
     #     question = query[random.randint(0, len(query) - 1)].format()
 
