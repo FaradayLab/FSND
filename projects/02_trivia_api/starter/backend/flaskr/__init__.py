@@ -161,58 +161,54 @@ def create_app(test_config=None):
 
   '''
   @TODO: 
-  Create a POST endpoint to get questions to play the quiz. 
-  This endpoint should take category and previous question parameters 
-  and return a random questions within the given category, 
-  if provided, and that is not one of the previous questions. 
-
   TEST: In the "Play" tab, after a user selects "All" or a category,
   one question at a time is displayed, the user is allowed to answer
   and shown whether they were correct or not. 
   '''
   @app.route('/quizzes', methods=['POST'])
   def quiz():
-    data = request.get_json()
-    previous_questions = data['previous_questions']
-    quiz_category = data['quiz_category']
-    category_id = quiz_category['id']
+    previous_questions = request.get_json()['previous_questions']
+    category_id = request.get_json()['quiz_category']['id']
 
-
-    '''
-    When starting new quiz check for category. If ALL, get question whose ID in not in previous questions
-    If Specific category get ID of all questions in category, select ID, check if ID is in previous questions
-    '''
-
-    if quiz_category['id']:
-      query = Question.query.filter(Question.category == category_id).all()
+    if category_id:
+      questions = Question.query.filter_by(category=category_id).filter(Question.id.notin_(previous_questions)).all()
     else:
-      query = Question.query.all()
-    
-    if len(previous_questions) >= len(query):
+      questions = Question.query.filter(Question.id.notin_(previous_questions)).all()
+
+    length_of_questions = len(questions)
+
+    if length_of_questions > 0:
+      question = questions[random.randrange(0, length_of_questions)].format()
+    else:
       question = None
-      q_id = 'none'
-      # abort(404)
-      print('length of prev questions', len(previous_questions), 'as long as than query', len(query))
-    else:
-      question = query[random.randint(0, len(query) - 1)].format()
-      i = 1
-      while question['id'] in previous_questions:
-        question = query[random.randint(0, len(query) - 1)].format()
 
-      q_id = question['id']
-
-    print('\n')
-    print('\n')
-    print(f'{previous_questions}')
-    print(f'{q_id}')
-    # print(len(previous_questions))
-    print('\n')
-    print('\n')
     return jsonify({
       'success': True,
       'question': question
     })
-      
+    
+    # data = request.get_json()
+    # previous_questions = data['previous_questions']
+    # quiz_category = data['quiz_category']
+    # category_id = quiz_category['id']
+
+    # if category_id:
+    #   query = Question.query.filter(Question.category == category_id).all()
+    # else:
+    #   query = Question.query.all()
+    
+    # if len(previous_questions) >= len(query):
+    #   question = None
+    # else:
+    #   question = query[random.randint(0, len(query) - 1)].format()
+    #   i = 1
+    #   while question['id'] in previous_questions:
+    #     question = query[random.randint(0, len(query) - 1)].format()
+
+    # return jsonify({
+    #   'success': True,
+    #   'question': question
+    # })
 
   '''
   @TODO: 
