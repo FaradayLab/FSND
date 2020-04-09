@@ -69,20 +69,16 @@ def create_app(test_config=None):
     '''
     @app.route('/categories', methods=['POST'])
     def create_category():
-        query = Category.query.all()
+        categories = formatted_categories()
         new_type = request.get_json()['type']
 
-        for cat in query:
-
-            if cat.type.lower() == new_type.lower():
+        for cat in categories:
+            if categories[cat].lower() == new_type.lower():
                 abort(422)
 
         category = Category(type=new_type)
-        categories = formatted_categories()
 
         category.insert()
-        
-
         create_category_image(new_type)
 
         return jsonify({'success': True, 'categories': categories})
