@@ -11,7 +11,9 @@ class FormView extends Component {
       answer: "",
       difficulty: 1,
       category: 1,
-      categories: {}
+      categories: {},
+      // category
+      type: ""
     }
   }
 
@@ -58,6 +60,32 @@ class FormView extends Component {
       }
     })
   }
+  submitCategory = (event) => {
+    event.preventDefault();
+    $.ajax({
+      url: '/categories', //TODO: update request URL
+      type: "POST",
+      dataType: 'json',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        type: this.state.type
+      }),
+      xhrFields: {
+        withCredentials: true
+      },
+      crossDomain: true,
+      success: (result) => {
+        // Updates category select in question add form
+        this.setState({ categories: result.categories })
+        document.getElementById("add-category-form").reset();
+        return;
+      },
+      error: (error) => {
+        alert('Unable to add category. Please try your request again')
+        return;
+      }
+    })
+  }
 
   handleChange = (event) => {
     this.setState({[event.target.name]: event.target.value})
@@ -98,7 +126,18 @@ class FormView extends Component {
           </label>
           <input type="submit" className="button" value="Submit" />
         </form>
+        <div id="category-form">
+          <h2>Add a New Category</h2>
+          <form className="form-view" id="add-category-form" onSubmit={this.submitCategory}>
+            <label>
+              Category
+              <input type="text" name="type" onChange={this.handleChange}/>
+            </label>
+            <input type="submit" className="button" value="Submit" />
+          </form>
+        </div>
       </div>
+      
     );
   }
 }

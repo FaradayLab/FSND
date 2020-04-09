@@ -1,4 +1,5 @@
-# import os
+import os
+import shutil
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -7,7 +8,24 @@ import random
 from models import setup_db, Question, Category
 
 QUESTIONS_PER_PAGE = 10
+# def navigate_and_rename(src):
+#     for item in os.listdir(src):
+#         s = os.path.join(src, item)
+#         if os.path.isdir(s):
+#             navigate_and_rename(s)
+#         else if s.endswith(".html"):
+#             shutil.copy(s, os.path.join(src, "newname.html"))    
 
+'''
+When adding new category this creates a new category image to be 
+displayed along with the category name using a generic category 
+image added to the public folder
+'''
+def create_category_image(new_file_name):
+    img_path= os.path.join(os.curdir , "../frontend/public")
+    src_img= os.path.join(img_path, 'generic-category.svg')
+    dst_img= os.path.join(img_path+'/', new_file_name+'.svg')
+    shutil.copy(src_img, dst_img)
 
 def paginate_questions(request, selection):
     page = request.args.get('page', 1, type=int)
@@ -20,7 +38,7 @@ def paginate_questions(request, selection):
     return current_questions
 
 
-def format_categories():
+def formatted_categories():
     return {cat.id: cat.type for cat in Category.query.all()}
 
 
@@ -42,13 +60,36 @@ def create_app(test_config=None):
 
     @app.route('/categories')
     def get_categories():
-        categories = format_categories()
+        categories = formatted_categories()
+
+        return jsonify({'success': True, 'categories': categories})
+
+    '''
+    Add Categories
+    '''
+    @app.route('/categories', methods=['POST'])
+    def create_category():
+        query = Category.query.all()
+        new_type = request.get_json()['type']
+
+        for cat in query:
+
+            if cat.type.lower() == new_type.lower():
+                abort(422)
+
+        category = Category(type=new_type)
+        categories = formatted_categories()
+
+        category.insert()
+        
+
+        create_category_image(new_type)
 
         return jsonify({'success': True, 'categories': categories})
 
     @app.route('/questions')
     def get_questions():
-        categories = format_categories()
+        categories = formatted_categories()
         selection = Question.query.all()
         questions = paginate_questions(request, selection)
 

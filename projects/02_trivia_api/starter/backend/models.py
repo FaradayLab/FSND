@@ -71,13 +71,23 @@ Category
 
 
 class Category(db.Model):
-  __tablename__ = 'categories'
+	__tablename__ = 'categories'
 
-  id = Column(Integer, primary_key=True)
-  type = Column(String)
+	id = Column(Integer, primary_key=True)
+	type = Column(String)
 
-  def __init__(self, type):
-      self.type = type
+	def __init__(self, type):
+		self.type = type
+	def insert(self):
+		db.session.add(self)
+		db.session.commit()
 
-  def format(self):
-      return {'id': self.id, 'type': self.type}
+	def update(self):
+		db.session.commit()
+
+	def delete(self):
+		db.session.delete(self)
+		db.session.commit()
+
+	def format(self):
+		return {'id': self.id, 'type': self.type}
