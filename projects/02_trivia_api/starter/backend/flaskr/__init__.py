@@ -92,15 +92,14 @@ def create_app(test_config=None):
         if len(questions) == 0:
             abort(404)
 
-        return jsonify(
-            {
-                'success': True,
-                'questions': questions,
-                'total_questions': len(Question.query.all()),
-                'categories': categories,
-                'current_category': None,
-            }
-        )
+        response = {
+            'success': True,
+            'questions': questions,
+            'total_questions': len(Question.query.all()),
+            'categories': categories,
+            'current_category': None,
+        }
+        return jsonify(response)
 
     @app.route('/questions/<int:question_id>', methods=['DELETE'])
     def delete_question(question_id):
@@ -148,15 +147,13 @@ def create_app(test_config=None):
             try:
                 selection = Question.query.filter(Question.question.ilike(f'%{search_term}%'))
                 questions = paginate_questions(request, selection)
-
-                return jsonify(
-                    {
+                response = {
                         'success': True,
                         'questions': questions,
                         'total_questions': len(selection.all()),
                         'current_category': None,
                     }
-                )
+                return jsonify(response)
             except:
                 abort(422)
         else:
@@ -166,15 +163,13 @@ def create_app(test_config=None):
     def questions_by_cat(category_id):
         selection = Question.query.filter_by(category=category_id).all()
         questions = paginate_questions(request, selection)
-
-        return jsonify(
-            {
+        response = {
                 'success': True,
                 'questions': questions,
                 'total_questions': len(selection),
                 'current_category': category_id,
             }
-        )
+        return jsonify(response)
 
     @app.route('/quizzes', methods=['POST'])
     def quiz():
