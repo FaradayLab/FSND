@@ -139,12 +139,14 @@ Example of Return:
 - Returns: questions object, `total_questions` integer, `current_category`
 
 Example of Return:
+```
 {
   'success': True, 
   'questions': [{'id': 10, 'question': 'Which is the ...}], 
   'total_questions': 7, 
   'current_category': None
 }
+```
 
 #### GET '/categories/category_id/questions'
 - Fetches question of a given category
@@ -152,12 +154,14 @@ Example of Return:
 - Returns: List of questions as objects
 
 Example of Return:
+```
 {
   'success': True, 
   'questions': [{'id': 10, 'question': 'Which is the ...}], 
   'total_questions': 3, 
   'current_category': 3
 }
+```
 
 #### POST '/quizzes'
 - Fetches questions for quiz based on chosen category and serves those questions without repeating questions
