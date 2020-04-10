@@ -110,7 +110,13 @@ Example of Return:
 ```
 {
   'success': True, 
-  'questions': [{'id': 5, 'question': "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?", 'answer': 'Maya Angelou', 'category': 4, 'difficulty': 2}, {'id': 9,... }],
+  'questions': [{
+    'id': 5, 
+    'question': "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?", 
+    'answer': 'Maya Angelou', 
+    'category': 4, 
+    'difficulty': 2}, {... 
+  }],
   'total_questions': 19, 
   'categories': {1: 'Science',... }, 
   'current_category': None
