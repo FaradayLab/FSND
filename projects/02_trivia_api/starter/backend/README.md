@@ -78,9 +78,10 @@ Example of Return:
 ```
 {
   'success': True,
-  {'1' : "Science",
-  '2' : "Art",
-  '3' :... }
+  'categories': {
+    '1' : "Science",
+    '2' : "Art",
+    '3' :... }
 }
 ```
 
@@ -93,13 +94,14 @@ Example of Return:
 ```
 {
   'success': True,
-  {'1' : "Science",
-  '2' : "Art",
-  '3' :... }
+  'categories': {
+    '1' : "Science",
+    '2' : "Art",
+    '3' :... }
 }
 ```
 
-GET '/questions'
+#### GET '/questions'
 - Fetches an object questions
 - Request Arguments: None
 - Returns: A list of question objects including it's `id`, `question`, `answer`, `difficulty` and `category`. An object with key:value pair of categories. A `total_questions` integer to be used to assist in pagination. `current_category` if looking at subset of questions
@@ -115,17 +117,17 @@ Example of Return:
 }
 ```
 
-POST '/questions'
+#### POST '/questions'
 - Sends JSON of form on Add page
 - Request Arguments: JSON of question values including `question`, `answer`, `difficulty`, `category`
 - Returns: JSON success or fail
 
-DELETE '/questions/question_id'
+#### DELETE '/questions/question_id'
 - Fetches question to delete
 - Request Arguments: question_id
 - Returns: JSON success or fail
 
-POST '/questions/search'
+#### POST '/questions/search'
 - Fetches questions based on a search term
 - Request Arguments: String of search term
 - Returns: questions object, `total_questions` integer, `current_category`
@@ -138,7 +140,7 @@ Example of Return:
   'current_category': None
 }
 
-GET '/categories/category_id/questions'
+#### GET '/categories/category_id/questions'
 - Fetches question of a given category
 - Request Arguments: Integer of `category_id`
 - Returns: List of questions as objects
@@ -151,7 +153,7 @@ Example of Return:
   'current_category': 3
 }
 
-POST '/quizzes'
+#### POST '/quizzes'
 - Fetches questions for quiz based on chosen category and serves those questions without repeating questions
 - Request Arguments: `previous_questions` which is a list of question ids which were previously given in the quiz. `quiz_category` which contains id of quiz.
 - Returns: Subset of questions based on chosen category
