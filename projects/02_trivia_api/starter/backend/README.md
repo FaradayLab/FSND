@@ -69,7 +69,7 @@ One note before you delve into your tasks: for each endpoint you are expected to
 
 ## API Endpoints
 
-GET '/categories'
+#### GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
 - Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs.
@@ -85,7 +85,7 @@ Example of Return:
 }
 ```
 
-POST '/categories'
+#### POST '/categories'
 - When Adding categories on the Add page this will check if the category exists and if not add the new category to the available categories that questions can be assigned to
 - Request Arguments: String of category name
 - Returns: An object with key:value pair of categories
@@ -117,7 +117,7 @@ Example of Return:
 }
 ```
 
-#### POST /questions
+#### POST '/questions'
 - Sends JSON of form on Add page
 - Request Arguments: JSON of question values including `question`, `answer`, `difficulty`, `category`
 - Returns: JSON success or fail
