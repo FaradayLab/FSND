@@ -3,6 +3,8 @@ __pycache__
 venv
 env
 misccode
+node_modules
+
 # OS generated files #
 ######################
 .DS_Store
