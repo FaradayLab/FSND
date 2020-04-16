@@ -8,6 +8,7 @@ misc-code
 node_modules
 yarn.lock
 *.code-workspace
+BasicFlaskAuth
 
 # OS generated files #
 ######################
