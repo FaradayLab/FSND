@@ -10,6 +10,9 @@ yarn.lock
 *.code-workspace
 BasicFlaskAuth
 
+drink Session.sql
+sqltools_20200419154855_67252.log
+
 # OS generated files #
 ######################
 .DS_Store

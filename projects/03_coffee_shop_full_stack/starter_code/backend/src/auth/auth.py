@@ -1,14 +1,17 @@
 import json
-from flask import request, _request_ctx_stack
+from flask import request, _request_ctx_stack, abort
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
 
 
-AUTH0_DOMAIN = 'udacity-fsnd.auth0.com'
+AUTH0_DOMAIN = 'coffeeshop-alexfsnd.auth0.com'
 ALGORITHMS = ['RS256']
-API_AUDIENCE = 'dev'
-
+API_AUDIENCE = 'coffeeshop'
+# Manager Token
+# eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik5RTjhFdENGMS11NWl2NldOV2d2TCJ9.eyJpc3MiOiJodHRwczovL2NvZmZlZXNob3AtYWxleGZzbmQuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDVlOWQ0NDNlNjNmODAwMGM4YzI0YzU5ZiIsImF1ZCI6ImNvZmZlZXNob3AiLCJpYXQiOjE1ODc0Mjg3OTEsImV4cCI6MTU4NzQzNTk5MSwiYXpwIjoibXZsSzVuYUZnSUVYR1NJbWlOT0N0NWo2ZzlhdnNadWoiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTpkcmlua3MiLCJnZXQ6ZHJpbmtzLWRldGFpbCIsInBhdGNoOmRyaW5rcyIsInBvc3Q6ZHJpbmtzIl19.DvYP249KmW5fVtghmEziop93mGh1S_dcDT49O-OZmwREPoaQx-uDwxt2GFMPlFM_3d5x2yY32-IYCT8yilfte9rFgUQvo04ZmjAn-xwERQI3YXQ-dPmDNEYLRSQgPfN9YbvlYN_bZZHXYVpX69EAq2ffuvT3U8uNj9hIxzMwfEhfOnkWaBnt2eQxXexne3oZutQ-pDavHryocwa_YKz7364QgAAXkHESLfuEsnzYfnFLQaGjDnJ12UyPxieuHga8iIAt21cafJK0uMWcNJo5XKABuNIA1cQxljVeRxPTXysVUinHLZhFUnHXeQngcJml2YbPOYshne6zrr6oxhPJMw
+# Barista Token
+# eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik5RTjhFdENGMS11NWl2NldOV2d2TCJ9.eyJpc3MiOiJodHRwczovL2NvZmZlZXNob3AtYWxleGZzbmQuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDVlOWQ0M2YzNDlmYjI0MGM4YTI2ZmJmZSIsImF1ZCI6ImNvZmZlZXNob3AiLCJpYXQiOjE1ODc0Mjc1MTQsImV4cCI6MTU4NzQzNDcxNCwiYXpwIjoibXZsSzVuYUZnSUVYR1NJbWlOT0N0NWo2ZzlhdnNadWoiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdldDpkcmlua3MtZGV0YWlsIl19.AylTjCVDlp-ANidifAGWILXpoO1qMRmkgTMEMuiDdTR7RoOnbxDx64HDey98L0J3Y-WtgR7e9-eEHTvCDxU_zhbWgISfDqfQ9T1z6fwteg-LW0HhV0A--s4C02DWR4Rpd8Iiz-spRlJzoklpihD4hDuVTttYNGPV0BXeRYQ_kmXSj-_ScmkpxSdr3H9O_E8U4Now6ug5Z-U3Ti_nIvEICJGvMkWtUWDeN3S0L-lImlgiDppzGve7N0IF7FdvxAwrQa69ys_P9senoRQm6JaIipNhGjZ0szVE5DTG8lHDO--ASh1-1kv1ZgnIHc3PGPZx8opm557yxRuAdACsBLw0-Q
 ## AuthError Exception
 '''
 AuthError Exception
@@ -31,7 +34,37 @@ class AuthError(Exception):
     return the token part of the header
 '''
 def get_token_auth_header():
-   raise Exception('Not Implemented')
+#    raise Exception('Not Implemented')
+    """Obtains the Access Token from the Authorization Header
+    """
+    auth = request.headers.get('Authorization', None)
+    if not auth:
+        raise AuthError({
+            'code': 'authorization_header_missing',
+            'description': 'Authorization header is expected.'
+        }, 401)
+
+    parts = auth.split()
+    if parts[0].lower() != 'bearer':
+        raise AuthError({
+            'code': 'invalid_header',
+            'description': 'Authorization header must start with "Bearer".'
+        }, 401)
+
+    elif len(parts) == 1:
+        raise AuthError({
+            'code': 'invalid_header',
+            'description': 'Token not found.'
+        }, 401)
+
+    elif len(parts) > 2:
+        raise AuthError({
+            'code': 'invalid_header',
+            'description': 'Authorization header must be bearer token.'
+        }, 401)
+
+    token = parts[1]
+    return token
 
 '''
 @TODO implement check_permissions(permission, payload) method
@@ -44,8 +77,21 @@ def get_token_auth_header():
     it should raise an AuthError if the requested permission string is not in the payload permissions array
     return true otherwise
 '''
+
 def check_permissions(permission, payload):
-    raise Exception('Not Implemented')
+    if 'permissions' not in payload:
+        raise AuthError({
+            'code': 'invalid_claims',
+            'description': 'Permissions not included in JWT.'
+        }, 400)
+
+    if permission not in payload['permissions']:
+        raise AuthError({
+            'code': 'unauthorized',
+            'description': 'Permission not found.'
+        }, 401)
+
+    return True
 
 '''
 @TODO implement verify_decode_jwt(token) method
@@ -61,7 +107,58 @@ def check_permissions(permission, payload):
     !!NOTE urlopen has a common certificate error described here: https://stackoverflow.com/questions/50236117/scraping-ssl-certificate-verify-failed-error-for-http-en-wikipedia-org
 '''
 def verify_decode_jwt(token):
-    raise Exception('Not Implemented')
+    # raise Exception('Not Implemented')
+    jsonurl = urlopen(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
+    jwks = json.loads(jsonurl.read())
+    unverified_header = jwt.get_unverified_header(token)
+    rsa_key = {}
+    if 'kid' not in unverified_header:
+        raise AuthError({
+            'code': 'invalid_header',
+            'description': 'Authorization malformed.'
+        }, 401)
+
+    for key in jwks['keys']:
+        if key['kid'] == unverified_header['kid']:
+            rsa_key = {
+                'kty': key['kty'],
+                'kid': key['kid'],
+                'use': key['use'],
+                'n': key['n'],
+                'e': key['e']
+            }
+    if rsa_key:
+        try:
+            payload = jwt.decode(
+                token,
+                rsa_key,
+                algorithms=ALGORITHMS,
+                audience=API_AUDIENCE,
+                issuer='https://' + AUTH0_DOMAIN + '/'
+            )
+
+            return payload
+
+        except jwt.ExpiredSignatureError:
+            raise AuthError({
+                'code': 'token_expired',
+                'description': 'Token expired.'
+            }, 401)
+
+        except jwt.JWTClaimsError:
+            raise AuthError({
+                'code': 'invalid_claims',
+                'description': 'Incorrect claims. Please, check the audience and issuer.'
+            }, 401)
+        except Exception:
+            raise AuthError({
+                'code': 'invalid_header',
+                'description': 'Unable to parse authentication token.'
+            }, 400)
+    raise AuthError({
+                'code': 'invalid_header',
+                'description': 'Unable to find the appropriate key.'
+            }, 400)
 
 '''
 @TODO implement @requires_auth(permission) decorator method
@@ -78,8 +175,14 @@ def requires_auth(permission=''):
         @wraps(f)
         def wrapper(*args, **kwargs):
             token = get_token_auth_header()
-            payload = verify_decode_jwt(token)
+
+            try:
+                payload = verify_decode_jwt(token)
+            except:
+                abort(401)
+
             check_permissions(permission, payload)
+
             return f(payload, *args, **kwargs)
 
         return wrapper
