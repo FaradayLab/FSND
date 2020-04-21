@@ -26,12 +26,7 @@ def get_drinks():
     if len(drinks) == 0:
         abort(404)
 
-    # drinks_short = [drink.short() for drink in drinks]
-
-    drinks_short = []
-    for drink in drinks:
-        drink = drink.short()
-        drinks_short.append(drink)
+    drinks_short = [drink.short() for drink in drinks]
 
     return jsonify({'success': True, 'drinks': drinks_short})
 
