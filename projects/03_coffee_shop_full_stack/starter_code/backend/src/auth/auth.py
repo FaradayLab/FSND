@@ -8,10 +8,7 @@ from urllib.request import urlopen
 AUTH0_DOMAIN = 'coffeeshop-alexfsnd.auth0.com'
 ALGORITHMS = ['RS256']
 API_AUDIENCE = 'coffeeshop'
-# Manager Token
-# eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik5RTjhFdENGMS11NWl2NldOV2d2TCJ9.eyJpc3MiOiJodHRwczovL2NvZmZlZXNob3AtYWxleGZzbmQuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDVlOWQ0NDNlNjNmODAwMGM4YzI0YzU5ZiIsImF1ZCI6ImNvZmZlZXNob3AiLCJpYXQiOjE1ODc0Mjg3OTEsImV4cCI6MTU4NzQzNTk5MSwiYXpwIjoibXZsSzVuYUZnSUVYR1NJbWlOT0N0NWo2ZzlhdnNadWoiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTpkcmlua3MiLCJnZXQ6ZHJpbmtzLWRldGFpbCIsInBhdGNoOmRyaW5rcyIsInBvc3Q6ZHJpbmtzIl19.DvYP249KmW5fVtghmEziop93mGh1S_dcDT49O-OZmwREPoaQx-uDwxt2GFMPlFM_3d5x2yY32-IYCT8yilfte9rFgUQvo04ZmjAn-xwERQI3YXQ-dPmDNEYLRSQgPfN9YbvlYN_bZZHXYVpX69EAq2ffuvT3U8uNj9hIxzMwfEhfOnkWaBnt2eQxXexne3oZutQ-pDavHryocwa_YKz7364QgAAXkHESLfuEsnzYfnFLQaGjDnJ12UyPxieuHga8iIAt21cafJK0uMWcNJo5XKABuNIA1cQxljVeRxPTXysVUinHLZhFUnHXeQngcJml2YbPOYshne6zrr6oxhPJMw
-# Barista Token
-# eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik5RTjhFdENGMS11NWl2NldOV2d2TCJ9.eyJpc3MiOiJodHRwczovL2NvZmZlZXNob3AtYWxleGZzbmQuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDVlOWQ0M2YzNDlmYjI0MGM4YTI2ZmJmZSIsImF1ZCI6ImNvZmZlZXNob3AiLCJpYXQiOjE1ODc0Mjc1MTQsImV4cCI6MTU4NzQzNDcxNCwiYXpwIjoibXZsSzVuYUZnSUVYR1NJbWlOT0N0NWo2ZzlhdnNadWoiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdldDpkcmlua3MtZGV0YWlsIl19.AylTjCVDlp-ANidifAGWILXpoO1qMRmkgTMEMuiDdTR7RoOnbxDx64HDey98L0J3Y-WtgR7e9-eEHTvCDxU_zhbWgISfDqfQ9T1z6fwteg-LW0HhV0A--s4C02DWR4Rpd8Iiz-spRlJzoklpihD4hDuVTttYNGPV0BXeRYQ_kmXSj-_ScmkpxSdr3H9O_E8U4Now6ug5Z-U3Ti_nIvEICJGvMkWtUWDeN3S0L-lImlgiDppzGve7N0IF7FdvxAwrQa69ys_P9senoRQm6JaIipNhGjZ0szVE5DTG8lHDO--ASh1-1kv1ZgnIHc3PGPZx8opm557yxRuAdACsBLw0-Q
+
 ## AuthError Exception
 '''
 AuthError Exception
@@ -74,7 +71,8 @@ def get_token_auth_header():
 
     it should raise an AuthError if permissions are not included in the payload
         !!NOTE check your RBAC settings in Auth0
-    it should raise an AuthError if the requested permission string is not in the payload permissions array
+    it should raise an AuthError if the requested permission string is not in 
+    the payload permissions array
     return true otherwise
 '''
 
@@ -104,10 +102,8 @@ def check_permissions(permission, payload):
     it should validate the claims
     return the decoded payload
 
-    !!NOTE urlopen has a common certificate error described here: https://stackoverflow.com/questions/50236117/scraping-ssl-certificate-verify-failed-error-for-http-en-wikipedia-org
 '''
 def verify_decode_jwt(token):
-    # raise Exception('Not Implemented')
     jsonurl = urlopen(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
     jwks = json.loads(jsonurl.read())
     unverified_header = jwt.get_unverified_header(token)
@@ -148,7 +144,7 @@ def verify_decode_jwt(token):
         except jwt.JWTClaimsError:
             raise AuthError({
                 'code': 'invalid_claims',
-                'description': 'Incorrect claims. Please, check the audience and issuer.'
+                'description': 'Incorrect claims. Check the audience/issuer.'
             }, 401)
         except Exception:
             raise AuthError({
@@ -167,8 +163,10 @@ def verify_decode_jwt(token):
 
     it should use the get_token_auth_header method to get the token
     it should use the verify_decode_jwt method to decode the jwt
-    it should use the check_permissions method validate claims and check the requested permission
-    return the decorator which passes the decoded payload to the decorated method
+    it should use the check_permissions method validate claims 
+    and check the requested permission
+    return the decorator which passes the decoded payload to the 
+    decorated method
 '''
 def requires_auth(permission=''):
     def requires_auth_decorator(f):

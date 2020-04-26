@@ -76,9 +76,6 @@ The `--reload` flag will detect file changes and restart the server automaticall
     - Right-clicking the collection folder for barista and manager, navigate to the authorization tab, and including the JWT in the token field (you should have noted these JWTs).
     - Run the collection and correct any errors.
     - Export the collection overwriting the one we've included so that we have your proper JWTs during review!
-    
-    
-    - !!!LAST THING BEFORE YOU SUBMIT PROJECT, RESET AUTH TOKENS FOR BARISTA/MANAGER RUN THE POSTMAN TESTS WITH NEW TOKENS. IF EVERYTHING PASSES EXPORT THE COLLECTION AND REPLACE THE DEFAULT COLLECTION IN PROJECT AND PUSH IT TO REPOSITORY. THEN YOU CAN SUBMIT PROJECT!!!
 
 
 ### Implement The Server
