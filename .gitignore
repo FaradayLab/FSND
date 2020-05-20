@@ -9,7 +9,7 @@ node_modules
 yarn.lock
 *.code-workspace
 BasicFlaskAuth
-heroku_sample
+heroku_sample/
 drink Session.sql
 sqltools_20200419154855_67252.log
 
