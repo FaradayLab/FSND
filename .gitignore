@@ -9,7 +9,6 @@ node_modules
 yarn.lock
 *.code-workspace
 BasicFlaskAuth
-heroku_sample
 drink Session.sql
 sqltools_20200419154855_67252.log
 
@@ -23,4 +22,3 @@ sqltools_20200419154855_67252.log
 ehthumbs.db
 Thumbs.db
 projects/03_coffee_shop_full_stack/starter_code/backend/old-udacity-fsnd-udaspicelatte.postman_collection.json
-projects/capstone/heroku_sample/starter/models.py
