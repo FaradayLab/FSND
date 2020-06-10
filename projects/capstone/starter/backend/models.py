@@ -1,6 +1,6 @@
 import os
 # DATE OBJECT FOR REALASE DATE?
-from sqlalchemy import Column, String, Integer, create_engine
+from sqlalchemy import Column, String, Integer, Date, create_engine
 from flask_sqlalchemy import SQLAlchemy
 import json
 
@@ -21,7 +21,7 @@ def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
-    db.create_all()
+    # db.create_all()
 
 
 '''
@@ -32,8 +32,8 @@ class Movie(db.Model):
     __tablename__ = 'Movies'
 
     id = Column(Integer, primary_key=True)
-    title = Column(String)
-    release = Column(String) #DATE OBJECT?
+    title = Column(String, nullable=False)
+    release = Column(Date, nullable=False) #DATE OBJECT?
 
     def __init__(self, name, release=""):
         self.name = name
@@ -46,13 +46,13 @@ class Movie(db.Model):
             'release': self.release
         }
 
-class Person(db.Model):  
+class Actor(db.Model):  
     __tablename__ = 'Actors'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    gender = Column(String)
-    age = Column(Integer)
+    name = Column(String, nullable=False)
+    gender = Column(String(1), nullable=False)
+    age = Column(Integer, nullable=False)
 
     def __init__(self, name, gender=""):
         self.name = name
