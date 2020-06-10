@@ -2,7 +2,7 @@ import os
 from flask import Flask, request, abort, jsonify
 from models import setup_db, Movie, Actor, db
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+# from flask_migrate import Migrate
 from flask_cors import CORS
 
 def create_app(test_config=None):
@@ -10,8 +10,8 @@ def create_app(test_config=None):
 	app = Flask(__name__)
 	setup_db(app)
 	CORS(app)
-	migrate = Migrate(app,db)
-	
+	# migrate = Migrate(app,db)
+
 	@app.route('/')
 	def home():
 		actor = Actor.query.one()
