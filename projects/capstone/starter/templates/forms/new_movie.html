@@ -1,0 +1,40 @@
+{% extends 'layouts/main.html' %}
+{% block title %}New Movie{% endblock %}
+{% block content %}
+  <div class="form-wrapper">
+    {% if movie %}
+      <form class="edit-form" name="movies" data-id="{{ movie.id }}">
+    {% else %}
+      <form method="post" class="form">
+    {% endif %}
+      <h3 class="form-heading">Add a new movie</h3>
+      <div class="form-group">
+        <label for="title">Title</label>
+        {{ form.title(class_ = 'form-control', autofocus = true) }}
+      </div>
+      <div class="form-group">
+        <label for="release">Release Date</label>
+        {{ form.release(class_ = 'form-control', autofocus = true) }}
+      </div>
+      <div class="form-group">
+        <label for="image_link">Image Link</label>
+        {{ form.image_link(class_ = 'form-control', placeholder='http://', autofocus = true) }}
+      </div>
+      
+      {# <div class="form-group">
+        <label for="website">Website</label>
+        {{ form.website(class_ = 'form-control', placeholder='http://', autofocus = true) }}
+      </div>
+      <div class="form-group">
+        <label for="facebook-link">Facebook Link</label>
+        {{ form.facebook_link(class_ = 'form-control', placeholder='http://', autofocus = true) }}
+      </div> #}
+      {% if movie %}
+        <input type="submit" class="btn btn-primary btn-lg btn-block" name="movies" value="Edit Movie" data-id="{{ movie.id }}">
+      {% else %}
+        <input type="submit" value="Create Actor" class="btn btn-primary btn-lg btn-block">
+      {% endif %}
+      {{ form.csrf_token() }}
+    </form>
+  </div>
+{% endblock %}

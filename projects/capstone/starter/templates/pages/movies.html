@@ -3,7 +3,7 @@
 {% block content %}
 <h3>Movies</h3>
 <ul class="items">
-{% for movie in movies %}
+{# {% for movie in movies %}
 	<li>
 		<a href="/movies/{{ movie.id }}">
 			<i class="fas fa-music"></i>
@@ -13,6 +13,22 @@
 		</a>
 	</li>
 {% endfor %}
-</ul>
-
+</ul> #}
+<div class="row">
+	{%for movie in movies %}
+	<div class="col-sm-2">
+		<a href="/movies/{{ movie.id }}">
+			{% if movie.image_link %}
+				<img src="{{ movie.image_link }}" alt="Movie Image" />
+			{% else %}
+				<img src="/static/img/generic-movie.jpg" alt="Movie Image" />
+			{% endif %}
+			<h5 style="text-align: center;">{{ movie.title }}</h5>
+		</a>
+	</div>
+	{% endfor %}
+</div>
+<h3>
+	<a href="/movies/create"><button class="btn btn-primary btn-lg">Add New Movie</button></a>
+</h3>
 {% endblock %}

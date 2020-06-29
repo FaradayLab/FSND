@@ -40,7 +40,50 @@
   <div id="wrap">
 
     <!-- Fixed navbar -->
-
+    <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">🔥</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li>
+              {% if (request.endpoint == 'movies') or
+                    (request.endpoint == 'search_movies') or
+                    (request.endpoint == 'show_movie') %}
+              <form class="search" method="post" action="/movies/search">
+                <input class="form-control"
+                  type="search"
+                  name="search_term"
+                  placeholder="Find a movie"
+                  aria-label="Search">
+              </form>
+              {% endif %}
+              {% if (request.endpoint == 'actors') or
+                    (request.endpoint == 'search_actors') or
+                    (request.endpoint == 'show_actor') %}
+              <form class="search" method="post" action="/actors/search">
+                <input class="form-control"
+                  type="search"
+                  name="search_term"
+                  placeholder="Find an actor"
+                  aria-label="Search">
+              </form>
+              {% endif %}
+            </li>
+          </ul>
+          <ul class="nav navbar-nav">
+            <li {% if request.endpoint == 'movies' %} class="active" {% endif %}><a href="{{ url_for('movies') }}">Movies</a></li>
+            <li {% if request.endpoint == 'actors' %} class="active" {% endif %}><a href="{{ url_for('actors') }}">Actors</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
 
     <!-- Begin page content -->
     <main id="content" role="main" class="container">
@@ -64,7 +107,7 @@
 
   <div id="footer">
     <div class="container">
-      <p>Fyyur &copy; All Rights Reserved.</p>
+      <p>Casting Agency &copy; All Rights Reserved.</p>
       {% block footer %}{% endblock %}
     </div>
   </div>

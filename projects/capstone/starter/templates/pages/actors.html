@@ -2,15 +2,25 @@
 {% block title %}Casting Agency | Actors{% endblock %}
 {% block content %}
 <h3>Actors</h3>
-<ul class="items">
-	{% for actor in actors %}
-	<li>
+<div class="row">
+	{%for actor in actors %}
+	<div class="col-sm-2">
 		<a href="/actors/{{ actor.id }}">
-			<div class="item">
-				<h5>{{ actor.name }}</h5>
-			</div>
+			{% if actor.image_link %}
+				<img src="{{ actor.image_link }}" alt="Actor Image" />
+			{% else %}
+				{% if actor.gender is eq('F') or actor.gender is eq('TF') %}
+				<img src="/static/img/generic-female.jpg" alt="Actor Image" />
+				{% else %}
+				<img src="/static/img/generic-male.jpg" alt="Actor Image" />
+				{% endif %}
+			{% endif %}
+			<h5 style="text-align: center;">{{ actor.name }}</h5>
 		</a>
-	</li>
+	</div>
 	{% endfor %}
-</ul>
+</div>
+<h3>
+	<a href="/actors/create"><button class="btn btn-primary btn-lg">Add New Actor</button></a>
+</h3>
 {% endblock %}

@@ -34,35 +34,75 @@ class Movie(db.Model):
     id = Column(Integer, primary_key=True)
     title = Column(String, nullable=False)
     release = Column(Date, nullable=False) #DATE OBJECT?
+    image_link = Column(String)
 
-    def __init__(self, name, release=""):
-        self.name = name
+    def __init__(self, title, release, image_link):
+        self.title = title
         self.release = release
+        self.image_link = image_link
 
     def format(self):
         return {
             'id': self.id,
-            'name': self.name,
-            'release': self.release
+            'name': self.title,
+            'release': self.release,
+            'image_link': self.image_link
         }
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def rollback(self):
+        db.session.rollback()
+
+    def close(self):
+        db.session.close()
 
 class Actor(db.Model):  
     __tablename__ = 'Actors'
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
-    gender = Column(String(1), nullable=False)
     age = Column(Integer, nullable=False)
+    gender = Column(String(2), nullable=False)
+    image_link = Column(String)
 
-    def __init__(self, name, gender=""):
+    def __init__(self, name, age, gender, image_link):
         self.name = name
-        self.gender = gender
         self.age = age
+        self.gender = gender
+        self.image_link = image_link
 
     def format(self):
         return {
             'id': self.id,
             'name': self.name,
+            'age': self.age,
             'gender': self.gender,
-            'age': self.age
+            'image_link': self.image_link
         }
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def rollback(self):
+        db.session.rollback()
+        
+    def close(self):
+        db.session.close()

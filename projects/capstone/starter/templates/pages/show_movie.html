@@ -1,0 +1,50 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Movie Search{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col-sm-6">
+	{% if movie.image_link %}
+		<img src="{{ movie.image_link }}" alt="Movie Image" />
+	{% else %}
+		<img src="{{ url_for('static',filename='img/generic-movie.jpg') }}" alt="Movie Image" />
+	{% endif %}
+	</div>
+	<div class="col-sm-6">
+		<h1 class="monospace">
+			{{ movie.title }}
+		</h1>
+		<p class="subtitle">
+			ID: {{ movie.id }}
+		</p>
+		<p class="subtitle">
+			Release Date: {{ movie.release|datetime() }}
+		</p>
+        <p>
+			<i class="fas fa-link"></i> {% if movie.website %}<a href="{{ movie.website }}" target="_blank">{{ movie.website }}</a>{% else %}No Website{% endif %}
+		</p>
+		<p>
+			<i class="fab fa-facebook-f"></i> {% if movie.facebook_link %}<a href="{{ movie.facebook_link }}" target="_blank">{{ movie.facebook_link }}</a>{% else %}No Facebook Link{% endif %}
+        </p>
+		<button class="edit-button btn btn-primary btn-md" name="movies" value="Edit Movie" data-id="{{ movie.id }}">Edit Movie</button>
+		<button class="delete-button btn btn-danger btn-md" name="movies" value="Delete Movie" data-id="{{ movie.id }}">Delete Movie</button>
+	</div>
+
+</div>
+{# <section>
+	<h2 class="monospace">{{ movie.upcoming_shows_count }} Upcoming {% if movie.upcoming_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
+	<div class="row">
+		{%for show in movie.upcoming_shows %}
+		<div class="col-sm-4">
+			<div class="tile tile-show">
+				<img src="{{ show.artist_image_link }}" alt="Show Artist Image" />
+				<h5><a href="/artists/{{ show.artist_id }}">{{ show.artist_name }}</a></h5>
+				<h6>{{ show.start_time|datetime('full') }}</h6>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</section> #}
+
+
+{% endblock %}
+
